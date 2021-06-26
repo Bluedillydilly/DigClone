@@ -12,5 +12,10 @@ namespace Dns
             _dnsServer = dnsServer;
             _requestType = requestType;
         }
+
+        public override string ToString()
+        {
+            return $"Dns Server: {_dnsServer}, Request Type: {_requestType}, Host: {_host}";
+        }
     }
 }

@@ -34,6 +34,7 @@ namespace Dns
                     DnsRequestType requestType
             ) = ParseCliArgs(args);
             var dnsRequester = new DnsRequester(hostName, dnsServer, requestType);
+            Console.WriteLine(dnsRequester);
 
         }
 
@@ -58,12 +59,12 @@ namespace Dns
             DnsRequestType requestType = DnsRequestType.A;
             
             // get hostname (argc 1, 2, 3)
-            var host = argv[-1];
+            var host = argv[^1];
 
             // get request type (argc 2, 3)
             if (argv.Length > 1)
             {
-                switch (argv[-2].ToUpper())
+                switch (argv[^2].ToUpper())
                 {
                     case "A":
                         requestType = DnsRequestType.A;
@@ -82,7 +83,7 @@ namespace Dns
                 // get DNS server (argc 3)
                 if (argv.Length > 2)
                 {
-                    dnsServer = argv[-3];
+                    dnsServer = argv[^3];
                 }
             }
             else
