@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -25,18 +26,19 @@ namespace Dns
             try
             {
                 Console.WriteLine($"Connecting to DNS server { _dnsServer }...");
-                var tcpClient = new TcpClient( _dnsServer, DnsKeywords.DnsPort );
-                tcpClient.Client.Send(dataBytes);
-                //Console.WriteLine("Request sent");
-                //var tcpClient = new TcpClient("time.nist.gov", 13);
-                var reader = new StreamReader(tcpClient.GetStream());
-                Console.WriteLine("Reading new data");
-                while (!reader.EndOfStream)
-                {
-                    Console.WriteLine("line: {0}",reader.ReadLine());
-                }
-                reader.Close();
-                tcpClient.Close();
+                //var tcpClient = new TcpClient( _dnsServer, DnsKeywords.DnsPort );
+                var client = new UdpClient();
+                
+                Console.Write("Sending: ");
+                DnsPacketMaker.printByteArray(dataBytes);
+
+                client.Send(dataBytes, dataBytes.Length, "192.168.1.1", 53);
+                var remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                var echo = client.Receive(ref remoteEndPoint);
+                DnsPacketMaker.printByteArray(echo);
+                client.Close();
+
+
             }
             catch (Exception e)
             {

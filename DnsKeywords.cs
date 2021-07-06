@@ -19,5 +19,7 @@ namespace Dns
         
         public const int AType = 1;
         public const int AAAAType = 28;
+
+        public const int DNSHeaderLength = 12;
     }
 }

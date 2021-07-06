@@ -9,7 +9,7 @@ namespace Dns
         public static byte[] DnsPacket(DnsRequestType rType, string address)
         {   
             // DNS header 12 bytes
-            var headerBytes = new byte[12];
+            var headerBytes = new byte[DnsKeywords.DNSHeaderLength];
                 // Transaction ID 2 bytes
             headerBytes[0] = 0x2a;
             headerBytes[1] = 0x9c;
