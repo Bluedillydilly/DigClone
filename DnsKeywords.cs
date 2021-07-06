@@ -17,5 +17,7 @@ namespace Dns
         // Answer section line start
         public const char Als = '.';
         
+        public const int AType = 1;
+        public const int AAAAType = 28;
     }
 }

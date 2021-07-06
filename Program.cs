@@ -12,6 +12,8 @@ namespace Dns
         private static int maxArgs = 3;
 
         
+
+        
         /// <summary>
         /// 
         /// </summary>
@@ -23,18 +25,11 @@ namespace Dns
                 Console.WriteLine("Invalid number of parameters.");
                 Usage();
             }
-            
-            foreach (var param in args)
-            {
-                Console.WriteLine(param);
-            }
-
-            (string hostName,
-                    string dnsServer,
-                    DnsRequestType requestType
-            ) = ParseCliArgs(args);
+                
+            var (hostName, dnsServer, requestType) = ParseCliArgs(args);
             var dnsRequester = new DnsRequester(hostName, dnsServer, requestType);
             Console.WriteLine(dnsRequester);
+            dnsRequester.request();
 
         }
 
@@ -53,7 +48,7 @@ namespace Dns
         /// </summary>
         /// <param name="argv"></param>
         /// <returns></returns>
-        static (string, string, DnsRequestType) ParseCliArgs(string[] argv)
+        private static (string, string, DnsRequestType) ParseCliArgs(string[] argv)
         {
             string dnsServer = DefaultDnsServer();
             DnsRequestType requestType = DnsRequestType.A;
@@ -72,11 +67,8 @@ namespace Dns
                     case "AAAA" :
                         requestType = DnsRequestType.AAAA;
                         break;
-                    case "CNAME":
-                        requestType = DnsRequestType.CNAME;
-                        break;
                     default:
-                        Console.WriteLine("Invalid Dns request type specified.");
+                        Console.WriteLine("Invalid Dns request type specified. Please select between 'A' and 'AAAA' type");
                         Usage();
                         break;
                 }
@@ -101,15 +93,30 @@ namespace Dns
         /// <returns></returns>
         static string DefaultDnsServer()
         {
-            NetworkInterface[] adapters  = NetworkInterface.GetAllNetworkInterfaces();
-            foreach (NetworkInterface adapter in adapters) 
+            var adapters  = NetworkInterface.GetAllNetworkInterfaces();
+            string address = "";
+            foreach (NetworkInterface adapter in adapters)
             {
+                //Console.WriteLine("{0}: {1}: {2}", adapter.OperationalStatus, adapter.Name, adapter.Description);
                 // determine if the interface is up, and not loopback
-                // for each valid adapter, get the IPPropties, and the DNS Addresses
+                if (adapter.OperationalStatus != OperationalStatus.Up ||
+                    adapter.NetworkInterfaceType == NetworkInterfaceType.Loopback ||
+                    adapter.NetworkInterfaceType == NetworkInterfaceType.Tunnel ||
+                    adapter.Name.StartsWith("vEthernet")) continue;
+                // for each valid adapter, get the IPProperties, and the DNS Addresses
+                var adapterDnsAddresses = adapter.GetIPProperties().DnsAddresses;
+                foreach (var addr in adapterDnsAddresses)
+                {
+                    //Console.WriteLine(addr);
                     // make sure the DNS server is valid and return it
+                    // try connecting to the server 
+                    address = addr.ToString();
+                }
+
+
             }
             
-            return "";
+            return address;
         }
     }
 
