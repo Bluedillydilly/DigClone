@@ -4,8 +4,17 @@ using System.Text;
 
 namespace Dns
 {
+    /// <summary>
+    /// Forms and creates the dns request bytes
+    /// </summary>
     public static class DnsPacketMaker
     {
+        /// <summary>
+        /// Creates the byte array to send in the dns/udp request
+        /// </summary>
+        /// <param name="rType">The dns request type</param>
+        /// <param name="address">target of the dns request</param>
+        /// <returns></returns>
         public static byte[] DnsPacket(DnsRequestType rType, string address)
         {   
             // DNS header 12 bytes
@@ -86,12 +95,20 @@ namespace Dns
         }
 
         
-
+        /// <summary>
+        /// Utility func to print out the bytes of a byte array in hex
+        /// </summary>
+        /// <param name="arr">Array to be printed</param>
         public static void printByteArray(byte[] arr)
         {
             Console.WriteLine( BitConverter.ToString(arr).Replace('-', ' ') );
         }
 
+        /// <summary>
+        /// Copies multiple byte arrays into a single byte array
+        /// </summary>
+        /// <param name="arrs">arrays of byte arrays</param>
+        /// <returns>A single larger byte array</returns>
         private static byte[] mergeByteArrays(byte[][] arrs)
         {
             var bigArr = new byte[arrs.Aggregate(0, (total, elem) => total + elem.Length)];

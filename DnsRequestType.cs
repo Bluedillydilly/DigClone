@@ -1,5 +1,8 @@
 namespace Dns
 {
+    /// <summary>
+    /// Types of DNS requests
+    /// </summary>
     public enum DnsRequestType
     {
         A,

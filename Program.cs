@@ -15,9 +15,9 @@ namespace Dns
 
         
         /// <summary>
-        /// 
+        /// Simple wrapper of sorts. 
         /// </summary>
-        /// <param name="args"></param>
+        /// <param name="args">cli args</param>
         static void Main(string[] args)
         {
             if (args.Length < minArgs || maxArgs < args.Length)
@@ -37,7 +37,7 @@ namespace Dns
         }
 
         /// <summary>
-        /// 
+        /// Prints usage and exits program. If called cli args error has occured
         /// </summary>
         static void Usage()
         {
@@ -47,10 +47,10 @@ namespace Dns
         }
 
         /// <summary>
-        /// 
+        /// Parsers the cli args and returns target hostname, dns server to use, and dns request type
         /// </summary>
         /// <param name="argv"></param>
-        /// <returns></returns>
+        /// <returns>hostname, dns server address, dns request type</returns>
         private static (string, string, DnsRequestType) ParseCliArgs(string[] argv)
         {
             string dnsServer = DefaultDnsServer();
@@ -91,16 +91,15 @@ namespace Dns
         }
 
         /// <summary>
-        /// 
+        /// Gets the default dns server to use to start the dns request with
         /// </summary>
-        /// <returns></returns>
+        /// <returns>default local dns server</returns>
         static string DefaultDnsServer()
         {
             var adapters  = NetworkInterface.GetAllNetworkInterfaces();
             string address = "";
             foreach (NetworkInterface adapter in adapters)
             {
-                //Console.WriteLine("{0}: {1}: {2}", adapter.OperationalStatus, adapter.Name, adapter.Description);
                 // determine if the interface is up, and not loopback
                 if (adapter.OperationalStatus != OperationalStatus.Up ||
                     adapter.NetworkInterfaceType == NetworkInterfaceType.Loopback ||
@@ -110,7 +109,6 @@ namespace Dns
                 var adapterDnsAddresses = adapter.GetIPProperties().DnsAddresses;
                 foreach (var addr in adapterDnsAddresses)
                 {
-                    //Console.WriteLine(addr);
                     // make sure the DNS server is valid and return it
                     // try connecting to the server 
                     address = addr.ToString();
@@ -122,6 +120,4 @@ namespace Dns
             return address;
         }
     }
-
-
 }

@@ -1,5 +1,8 @@
 namespace Dns
 {
+    /// <summary>
+    /// keywords related to
+    /// </summary>
     public static class DnsKeywords
     {
         // port dns protocol is on
@@ -17,9 +20,12 @@ namespace Dns
         // Answer section line start
         public const char Als = '.';
         
+        // byte value of 'A' type dns request
         public const int AType = 1;
+        // byte value of 'AAAA' type dns request
         public const int AAAAType = 28;
 
+        // length of a dns header
         public const int DNSHeaderLength = 12;
     }
 }

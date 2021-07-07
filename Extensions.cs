@@ -2,14 +2,29 @@
 
 namespace Dns
 {
+    /// <summary>
+    /// Deconstruction extension methods
+    /// </summary>
     public static class Extensions
     {
+        /// <summary>
+        /// Deconstruct a '.' split address into the hostname and domain name
+        /// </summary>
+        /// <param name="arr">split address</param>
+        /// <param name="hostname">hostname part of the address</param>
+        /// <param name="domainName">domain name part of the address</param>
         public static void Deconstruct(this string[] arr, out string hostname, out string domainName)
         {
             hostname = arr[0];
             domainName = arr[1];
         }
 
+        /// <summary>
+        /// Deconstruct a dns response byte array into the a header and body
+        /// </summary>
+        /// <param name="respArr">dns response byte array</param>
+        /// <param name="header">header part of dns packet</param>
+        /// <param name="body">body part of dns packet</param>
         public static void Deconstruct(this byte[] respArr, out byte[] header, out byte[] body)
         {
             header = new byte[DnsKeywords.DNSHeaderLength];
@@ -20,7 +35,14 @@ namespace Dns
 
         }
         
-        
+        /// <summary>
+        /// Deconstruct the body of a dns response byte array into the various parts. INCOMPLETE. NOT FINISH. WIP
+        /// </summary>
+        /// <param name="body">The body of the dns packet</param>
+        /// <param name="query">bytes related to the initial dns query</param>
+        /// <param name="answers">bytes answers to the dns query </param>
+        /// <param name="authNameServers">authorital servers in the dns query process</param>
+        /// <param name="addRecords"></param>
         public static void Deconstruct(this byte[] body, out byte[] query, out byte[] answers, out byte[] authNameServers, out byte[] addRecords)
         {
             var offset = 0;
