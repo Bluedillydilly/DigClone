@@ -29,8 +29,11 @@ namespace Dns
             var (hostName, dnsServer, requestType) = ParseCliArgs(args);
             var dnsRequester = new DnsRequester(hostName, dnsServer, requestType);
             Console.WriteLine(dnsRequester);
-            dnsRequester.request();
+            var response = dnsRequester.request();
 
+            var respReader = new DnsResponseReader(response);
+            respReader.read();
+            
         }
 
         /// <summary>

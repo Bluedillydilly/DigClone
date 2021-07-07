@@ -20,24 +20,20 @@ namespace Dns
             _requestType = requestType;
         }
 
-        public void request()
+        public byte[] request()
         {
             var dataBytes = DnsPacketMaker.DnsPacket(_requestType, _host);
             try
             {
-                Console.WriteLine($"Connecting to DNS server { _dnsServer }...");
-                //var tcpClient = new TcpClient( _dnsServer, DnsKeywords.DnsPort );
                 var client = new UdpClient();
                 
-                Console.Write("Sending: ");
-                DnsPacketMaker.printByteArray(dataBytes);
 
                 client.Send(dataBytes, dataBytes.Length, "192.168.1.1", 53);
                 var remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
                 var echo = client.Receive(ref remoteEndPoint);
-                DnsPacketMaker.printByteArray(echo);
                 client.Close();
-
+                
+                return echo;
 
             }
             catch (Exception e)
@@ -49,7 +45,7 @@ namespace Dns
 
         public override string ToString()
         {
-            return $"Dns Server: {_dnsServer}, Request Type: {_requestType}, Host: {_host}";
+            return $"; <<>> Dig Clone <<>> Dns server: {_dnsServer}, Request Type: {_requestType}, Host: {_host}";
         }
     }
 }

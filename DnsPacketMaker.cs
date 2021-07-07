@@ -11,8 +11,8 @@ namespace Dns
             // DNS header 12 bytes
             var headerBytes = new byte[DnsKeywords.DNSHeaderLength];
                 // Transaction ID 2 bytes
-            headerBytes[0] = 0x2a;
-            headerBytes[1] = 0x9c;
+            headerBytes[0] = 0xBE;
+            headerBytes[1] = 0xEF;
                     // anything you want, server will respond with same ID
                 // 7 Flags 2 bytes
             headerBytes[2] = 0x01;
@@ -85,11 +85,7 @@ namespace Dns
             return dnsRequestBytes;
         }
 
-        private static void Deconstruct(this string[] arr, out string hostname, out string domainName)
-        {
-            hostname = arr[0];
-            domainName = arr[1];
-        }
+        
 
         public static void printByteArray(byte[] arr)
         {
